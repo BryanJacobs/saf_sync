@@ -148,6 +148,7 @@ def sync(root_source: SAFEntry, root_dest: SAFEntry) -> None:
             for entry_name in source_entries:
                 entry = source_entries[entry_name]
                 if entry_name not in dest_entries:
+                    debug(f"Newly creating {entry.name}")
                     new_sync = create_dest_to_match(entry, dest)
                     if new_sync is not None:
                         process_stack.append(new_sync)
@@ -163,7 +164,7 @@ def sync(root_source: SAFEntry, root_dest: SAFEntry) -> None:
                     elif source_type == SAFType.DIR:
                         process_stack.append((entry, dest_entry))
                     else:
-                        if entry.modified is not None and entry.length == dest_entry.length and entry.modified > dest_entry.modified:
+                        if entry.modified is not None and dest_entry.modified is not None and entry.length == dest_entry.length and entry.modified <= dest_entry.modified:
                             debug(f"Skipping transfer of {entry.name} because dest file is same size and at least as new")
                         else:
                             contents = saf_read(entry)
