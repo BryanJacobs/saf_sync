@@ -7,9 +7,9 @@ using the Android Storage Access Framework (SAF).
 This allows a non-root user to copy files from internal storage to external or vice versa, a la rsync. Any files/dirs present
 in the destination but not the source are deleted. Any files/dirs in the source have their exact contents mirrored to the destination.
 
-The script is very primitive and will always overwrite destination files _so it is not intended for use with large files_.
-The current Termux API doesn't even expose last-modified timestamps so the only way to know if a file has changed is to
-read it entirely. Similarly, the Termux API can't write to a byte range within a file, so the whole file must be overwritten.
+The script is very primitive and will overwrite destination files unless lengths exactly match and modification times
+say the destination is at least as new, _so it is not intended for use with large files_. The Termux API can't write to
+a byte range within a file, so the whole file must be overwritten.
 
 THIS WILL NOT BE VERY FAST. Again, it's not intended for large files and will happily run you out of RAM if you try.
 
